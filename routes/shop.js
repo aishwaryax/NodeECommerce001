@@ -3,18 +3,22 @@ const path = require('path');
 
 const adminData = require('../routes/admin');
 const rootDir = require('../util/path');
+const shopController = require('../controllers/shop');
 
-const Router = express.Router();
+const router = express.Router();
 
-Router.get('/',(req, res, next) => {
+router.get('/', shopController.getIndex);
 
-    //console.log(adminData.products)
-    //res.sendFile(path.join(rootDir, 'views', 'shop.pug'));
-    products = adminData.products
-    res.render('shop', {pageTitle: 'Shop', 
-                        productsList: products, 
-                        path: '/'});
+router.get('/products', shopController.getProducts);
 
-});
+router.get('/products/delete', shopController.getProductDetails);
 
-module.exports = Router;
+router.get('/products/:productId', shopController.getProductDetails);
+
+router.get('/cart', shopController.getCart);
+
+router.post('/cart', shopController.postCart);
+
+router.get('/checkout', shopController.getCheckout);
+
+module.exports = router;
