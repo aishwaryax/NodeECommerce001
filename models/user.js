@@ -1,4 +1,4 @@
-const getDb = require('../util/database').getDb;
+/*const getDb = require('../util/database').getDb;
 const mongoDb = require('mongodb')
 
 class User {
@@ -94,4 +94,4 @@ class User {
   }
 }
 
-module.exports = User
+module.exports = User*/
