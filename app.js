@@ -8,6 +8,10 @@ const MONGODB_URI = 'mongodb+srv://aish:2iJTh8WG0guDjasa@nodejs001-we6ex.mongodb
 
 const errorController = require('./controllers/error')
 const mongoose = require('mongoose')
+const csrf = require('csurf')
+const flash = require('connect-flash')
+const csrfProtection = csrf()
+
 const app = express()
 const store = new mongodbStore({
   uri: MONGODB_URI,
@@ -26,6 +30,7 @@ const User = require('./models/user')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({secret: 'my-secret-key', resave: false, saveUninitialized: false, store: store}))
+app.use(csrfProtection)
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -41,6 +46,14 @@ app.use((req, res, next) => {
   }
   
 });
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn
+  res.locals.csrfToken = req.csrfToken()
+  next()
+})
+
+app.use(flash())
 
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)

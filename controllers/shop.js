@@ -66,10 +66,7 @@ exports.postCart = (req, res, next) => {
 
   Product.findById(prodId).then(product => {
     req.user.addToCart(product)
-    return res.redirect('/cart',
-    {
-      isAuthenticated: req.session.isLoggedIn
-    });
+    return res.redirect('/cart')
   })
 };
 
@@ -89,7 +86,7 @@ exports.postOrder = (req, res, next) => {
     })
     const order = new Order({
       user: {
-        name: req.user.name,
+        email: req.user.email,
         userId: req.user._id
         },
         products: products
